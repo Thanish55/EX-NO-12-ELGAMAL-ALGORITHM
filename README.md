@@ -51,3 +51,88 @@ To Implement ELGAMAL ALGORITHM
                 printf("Bob's public key (y): %d\n", bob_public_key); 
              
                 printf("Alice, enter the message (M) you want to send: "); 
+                scanf("%d", &message); 
+             
+                printf("Alice's private key (k): "); 
+                scanf("%d", &k); 
+             
+                int c1 = 1;  // c1 = g^k % p 
+                int c2 = 0;  // c2 = M * y^k % p 
+             
+                // Compute c1 = g^k % p 
+                base = g; 
+                exp = k; 
+                mod = p; 
+                 
+                while (exp > 0) { 
+                    if (exp % 2 == 1) { 
+                        c1 = (c1 * base) % mod; 
+                    } 
+                    base = (base * base) % mod; 
+                    exp = exp / 2; 
+                } 
+             
+                int yk = 1; 
+                base = bob_public_key; 
+                exp = k; 
+                mod = p; 
+                 
+                while (exp > 0) { 
+                    if (exp % 2 == 1) { 
+                        yk = (yk * base) % mod; 
+                    } 
+                    base = (base * base) % mod; 
+                    exp = exp / 2; 
+                } 
+             
+                // Compute c2 = M * y^k % p 
+                c2 = (message * yk) % p; 
+                 
+                printf("Alice sends encrypted message (c1, c2): (%d, %d)\n", c1, c2); 
+             
+                int s = 1;  // s = c1^x % p 
+             
+                // Compute s = c1^x % p 
+                base = c1; 
+                exp = bob_private_key; 
+                mod = p; 
+                 
+                while (exp > 0) { 
+                    if (exp % 2 == 1) { 
+                        s = (s * base) % mod; 
+                    } 
+                    base = (base * base) % mod; 
+                    exp = exp / 2; 
+                } 
+             
+                int s_inv = 1; 
+                int s_temp = s; 
+                int p_temp = p; 
+                int t, q; 
+                int x0 = 0, x1 = 1; 
+             
+                while (s_temp > 1) { 
+                    q = s_temp / p_temp; 
+                    t = p_temp; 
+                    p_temp = s_temp % p_temp, s_temp = t; 
+                    t = x0; 
+                    x0 = x1 - q * x0; 
+            x1 = t; 
+            } 
+            if (x1 < 0) { 
+            x1 += p; 
+            } 
+            s_inv = x1; 
+            // Bob decrypts the message: M = c2 * s_inv % p 
+            int decrypted_message = (c2 * s_inv) % p; 
+            printf("Bob decrypts the message: %d\n", decrypted_message); 
+            return 0; 
+            }
+
+## Output:
+
+<img width="1671" height="801" alt="image" src="https://github.com/user-attachments/assets/f64d46eb-d362-4d76-ad1e-5e7ec9443b4c" />
+
+
+## Result:
+The program is executed successfully.
