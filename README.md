@@ -25,9 +25,29 @@ To Implement ELGAMAL ALGORITHM
 
 ## Program:
 
-
-## Output:
-
-
-## Result:
-The program is executed successfully.
+            #include <stdio.h> 
+            #include <stdlib.h> 
+            #include <math.h> 
+            int main() { 
+            int p, g, bob_private_key, message, k; 
+            printf("Enter a prime number (p): "); 
+            scanf("%d", &p); 
+            printf("Enter a primitive root modulo p (g): "); 
+            scanf("%d", &g); 
+            printf("Bob's private key (x): "); 
+            scanf("%d", &bob_private_key); 
+            int bob_public_key = 1; 
+            int base = g; 
+            int exp = bob_private_key; 
+            int mod = p; 
+            while (exp > 0) { 
+            if (exp % 2 == 1) { 
+                        bob_public_key = (bob_public_key * base) % mod; 
+                    } 
+                    base = (base * base) % mod; 
+                    exp = exp / 2; 
+                } 
+                 
+                printf("Bob's public key (y): %d\n", bob_public_key); 
+             
+                printf("Alice, enter the message (M) you want to send: "); 
